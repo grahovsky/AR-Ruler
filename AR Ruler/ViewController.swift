@@ -88,11 +88,27 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let end = dotNodes[1]
         
         let distance = simd_distance(start.simdPosition, end.simdPosition)
-        print(distance)
+        //print(distance)
         
-        let distance2 = sqrt(pow(end.position.x - start.position.x, 2) + pow(end.position.y - start.position.y, 2) + pow(end.position.z - start.position.z, 2))
-        print(distance2)
+//        let distance2 = sqrt(pow(end.position.x - start.position.x, 2) + pow(end.position.y - start.position.y, 2) + pow(end.position.z - start.position.z, 2))
+//        print(distance2)
+        
+        updateText(text: String(format: "%.2f cm", distance*100), atPosition: end.position)
     
+    }
+    
+    func updateText(text: String, atPosition position: SCNVector3) {
+        
+        let textGeometry = SCNText(string: text, extrusionDepth: 1.0)
+        textGeometry.firstMaterial?.diffuse.contents = UIColor.yellow
+        
+        let textNode = SCNNode(geometry: textGeometry)
+        textNode.position = SCNVector3(position.x, position.y + 0.01, position.z)
+        
+        textNode.scale = SCNVector3(0.005, 0.005, 0.005)
+        
+        sceneView.scene.rootNode.addChildNode(textNode)
+        
     }
     
 }
